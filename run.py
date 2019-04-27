@@ -13,7 +13,7 @@ black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
-ball = GolfBall(screen)
+ball = GolfBall(screen, speed)
 
 while True:
     for event in pygame.event.get():
