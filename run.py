@@ -3,6 +3,8 @@ import sys
 
 import pygame
 
+from objects import GolfBall
+
 pygame.init()
 
 size = width, height = 960, 640
@@ -11,10 +13,7 @@ black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
 
-ball = pygame.image.load(
-    os.path.join("resources", "golf_ball.png")
-).convert()
-ballrect = ball.get_rect()
+ball = GolfBall(screen)
 
 while True:
     for event in pygame.event.get():
@@ -22,6 +21,6 @@ while True:
             sys.exit(0)
 
     screen.fill(black)
-    screen.blit(ball, ballrect)
+    ball.display()
     pygame.display.flip()
 
