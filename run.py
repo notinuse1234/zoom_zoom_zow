@@ -21,6 +21,7 @@ while True:
             sys.exit(0)
 
     screen.fill(black)
+    ball.update()
     ball.display()
     pygame.display.flip()
 
