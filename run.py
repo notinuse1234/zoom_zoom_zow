@@ -16,7 +16,12 @@ ball = pygame.image.load(
 ).convert()
 ballrect = ball.get_rect()
 
-screen.fill(black)
-screen.blit(ball, ballrect)
-pygame.display.flip()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit(0)
+
+    screen.fill(black)
+    screen.blit(ball, ballrect)
+    pygame.display.flip()
 
