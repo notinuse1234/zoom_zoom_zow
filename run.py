@@ -5,7 +5,9 @@ import pygame
 
 from objects import GolfBall
 
+
 pygame.init()
+pygame.display.set_caption("zOoM ZoOm zOw")
 
 size = width, height = 960, 640
 speed = [2, 2]
