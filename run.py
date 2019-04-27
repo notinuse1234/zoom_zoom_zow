@@ -5,7 +5,7 @@ import pygame
 
 pygame.init()
 
-size = width, height = 640, 480
+size = width, height = 960, 640
 speed = [2, 2]
 black = 0, 0, 0
 
