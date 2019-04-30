@@ -42,6 +42,41 @@ class App():
         text_surf = font.render(text, True, color)
         return text_surf, text_surf.get_rect()
 
+    def button(self, text, x, y, w, h, ic, ac):
+        """Create a buton.
+
+        :param text: The button text
+        :param x: The X position of top left
+        :param y: The Y position of top left
+        :param w: The width of the button
+        :param h: The height of the button
+        :param ic: The color of button when not hovering
+        :param ac: The color of button when hovering
+        """
+        mouse = pg.mouse.get_pos()
+        if x+w > mouse[0] > x and y+h > mouse[1] > y:
+            pg.draw.rect(
+                self.screen,
+                ac,
+                (x, y, w, h)
+            )
+        else:
+            pg.draw.rect(
+                self.screen,
+                ic,
+                (x, y, w, h)
+            )
+        small_text = pg.font.Font(
+            'freesansbold.ttf',
+            int(0.02 * self.screen.get_size()[0])
+        )
+        text_surf, text_rect = self.text_objects(
+            text, small_text
+        )
+        text_rect.center = ((x+(w/2)),
+                            (y+(h/2)))
+        self.screen.blit(text_surf, text_rect)
+
     def main_menu(self):
         while self.at_menu:
             for event in pg.event.get():
@@ -56,10 +91,6 @@ class App():
                 'freesansbold.ttf',
                 int(0.075 * self.screen.get_size()[0])
             )
-            small_text = pg.font.Font(
-                'freesansbold.ttf',
-                int(0.02 * self.screen.get_size()[0])
-            )
             # Title
             text_surf, text_rect = self.text_objects(
                 "zOoM ZoOm zOw", large_text, Colors.get('tee_area')
@@ -71,46 +102,20 @@ class App():
             self.screen.blit(text_surf, text_rect)
             # Begin button
             begin_loc = (250, 450, 100, 50)
-            text_surf, text_rect = self.text_objects(
-                "Begin", small_text
+            self.button(
+                "Begin",
+                *begin_loc,
+                Colors.get('darkgray'),
+                Colors.get('lightgray')
             )
-            text_rect.center = ((begin_loc[0]+(begin_loc[2]/2)),
-                                (begin_loc[1]+(begin_loc[3]/2)))
-            if begin_loc[0]+begin_loc[2] > mouse[0] > begin_loc[0] and \
-               begin_loc[1]+begin_loc[3] > mouse[1] > begin_loc[1]:
-                pg.draw.rect(
-                    self.screen,
-                    Colors.get('lightgray'),
-                    begin_loc
-                )
-            else:
-                pg.draw.rect(
-                    self.screen,
-                    Colors.get('darkgray'),
-                    begin_loc
-                )
-            self.screen.blit(text_surf, text_rect)
             # Quit button
             quit_loc = (600, 450, 100, 50)
-            text_surf, text_rect = self.text_objects(
-                "Quit", small_text
+            self.button(
+                "Quit",
+                *quit_loc,
+                Colors.get('darkgray'),
+                Colors.get('lightgray')
             )
-            text_rect.center = ((quit_loc[0]+(quit_loc[2]/2)),
-                                (quit_loc[1]+(quit_loc[3]/2)))
-            if quit_loc[0]+quit_loc[2] > mouse[0] > quit_loc[0] and \
-               quit_loc[1]+quit_loc[3] > mouse[1] > quit_loc[1]:
-                pg.draw.rect(
-                    self.screen,
-                    Colors.get('lightgray'),
-                    quit_loc
-                )
-            else:
-                pg.draw.rect(
-                    self.screen,
-                    Colors.get('darkgray'),
-                    quit_loc
-                )
-            self.screen.blit(text_surf, text_rect)
             pg.display.flip()
             self.clock.tick(FPS/5)
 
