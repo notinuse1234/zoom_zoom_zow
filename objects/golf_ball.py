@@ -17,6 +17,8 @@ class GolfBall(pygame.sprite.Sprite):
             self.size
         )
         self.rect = self.image.get_rect()
+        self.rect.bottom = self.screen.get_size()[1] - 10
+        self.rect.right = self.screen.get_size()[0] / 2
         self.vector = (0, 0)
         self.speed = 5
 

@@ -28,7 +28,7 @@ class App():
 
             pressed_keys = pygame.key.get_pressed()
 
-            self.screen.fill(Colors.get('green'))
+            self.screen.fill(Colors.get('tee_area'))
             self.ball.update(pressed_keys)
             pygame.display.flip()
             self.clock.tick(30)
