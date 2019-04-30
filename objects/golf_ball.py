@@ -18,7 +18,7 @@ class GolfBall(pygame.sprite.Sprite):
         )
         self.rect = self.image.get_rect()
         self.vector = (0, 0)
-        self.speed = 1
+        self.speed = 5
 
     def update(self, pressed_keys):
         if pressed_keys[pygame.K_UP]:
