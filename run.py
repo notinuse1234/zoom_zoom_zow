@@ -13,6 +13,7 @@ SCREEN_HEIGHT = 640
 
 class App():
     def __init__(self):
+        """Initialize the game."""
         pg.init()
         pg.display.set_caption("zOoM ZoOm zOw")
         self.clock = pg.time.Clock()
@@ -23,11 +24,18 @@ class App():
         self.running = False
 
     def display_message(self, text):
+        """Display a message on the screen for 2 seconds.
+
+        :param text: The text to display
+        """
+        # Create the font
         large_text = pg.font.Font(
             'freesansbold.ttf',
             int(0.075 * self.screen.get_size()[0])
         )
+        # Create the text object
         text_surf, text_rect = self.text_objects(text, large_text)
+        # Center the text object
         text_rect.center = (
             self.screen.get_size()[0] / 2,
             self.screen.get_size()[1] / 4
@@ -39,6 +47,12 @@ class App():
 
     @staticmethod
     def text_objects(text, font, color=(0, 0, 0)):
+        """Create a text object.
+
+        :param text: The text of the object
+        :param font: The font of the object
+        :param color: The color of the text
+        """
         text_surf = font.render(text, True, color)
         return text_surf, text_surf.get_rect()
 
@@ -56,20 +70,24 @@ class App():
         """
         mouse = pg.mouse.get_pos()
         click = pg.mouse.get_pressed()
+        # If the mouse is inside the button
         if x+w > mouse[0] > x and y+h > mouse[1] > y:
             pg.draw.rect(
                 self.screen,
                 ac,
                 (x, y, w, h)
             )
+            # If the mouse is clicked on the button
             if click[0] == 1 and action:
                 action()
         else:
+            # Normal button
             pg.draw.rect(
                 self.screen,
                 ic,
                 (x, y, w, h)
             )
+        # The button text
         small_text = pg.font.Font(
             'freesansbold.ttf',
             int(0.02 * self.screen.get_size()[0])
@@ -82,29 +100,32 @@ class App():
         self.screen.blit(text_surf, text_rect)
 
     def main_menu(self):
+        """The main menu for the game."""
 
         def begin_game():
+            """Close the menu and start the game."""
             self.running = True
             self.at_menu = False
             self.game_loop()
 
         def quit_menu():
+            """Close the menu and quit the app."""
             self.at_menu = False
 
         while self.at_menu:
             for event in pg.event.get():
+                # Quit if escape or 'x' button is pressed
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         quit_menu()
                 if event.type == pg.QUIT:
                     quit_menu()
             self.screen.fill(Colors.get('heavy_rough'))
-            mouse = pg.mouse.get_pos()
+            # Title
             large_text = pg.font.Font(
                 'freesansbold.ttf',
                 int(0.075 * self.screen.get_size()[0])
             )
-            # Title
             text_surf, text_rect = self.text_objects(
                 "zOoM ZoOm zOw", large_text, Colors.get('tee_area')
             )
@@ -135,14 +156,17 @@ class App():
             self.clock.tick(FPS/2)
 
     def game_loop(self):
+        """The game loop, when Begin is pressed."""
 
         def quit_game():
+            """Quit the game back to the main menu."""
             self.at_menu = True
             self.running = False
             self.main_menu()
 
         while self.running:
             for event in pg.event.get():
+                # Quit to menu on escape
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         quit_game()
@@ -156,6 +180,8 @@ class App():
             pg.display.flip()
             self.clock.tick(FPS)
 
+
+# 'Nameguard' - this starts the game only if called with `python run.py`
 if __name__ == '__main__':
     app = App()
     app.main_menu()

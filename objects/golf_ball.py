@@ -7,16 +7,23 @@ import pygame as pg
 class GolfBall(pg.sprite.Sprite):
 
     def __init__(self, screen):
+        """Initialize the golf ball.
+
+        :param screen: The pygame display
+        """
         super(GolfBall, self).__init__()
-        self.size = 80, 48
-        self.radius = 40
         self.screen = screen
+        self.size = 80, 48
+        # Set the radius for detecting collisions
+        self.radius = 40
+        # Set the image and set it to the defined size 
         self.surf = pg.transform.scale(
             pg.image.load(
                 os.path.join(os.getcwd(), "resources", "golf_ball.png")
             ).convert(),
             self.size
         )
+        # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
         self.rect.bottom = self.screen.get_size()[1] - 10
         self.rect.right = self.screen.get_size()[0] / 2
@@ -24,6 +31,10 @@ class GolfBall(pg.sprite.Sprite):
         self.speed = 5
 
     def update(self, pressed_keys):
+        """Update the golf ball's location.
+
+        :param pressed_keys: A dict of pressed keys this fram
+        """
         if pressed_keys[pg.K_UP]:
             self.vector = (0, -self.speed)
         if pressed_keys[pg.K_DOWN]:
@@ -33,7 +44,6 @@ class GolfBall(pg.sprite.Sprite):
         if pressed_keys[pg.K_RIGHT]:
             self.vector = (self.speed, 0)
         #newpos = self.calcnewpos(self.rect, self.vector)
-        #self.rect = newpos
         # Keep ball on the screen
         if self.rect.left < 0:
             self.rect.left = 0
@@ -43,7 +53,7 @@ class GolfBall(pg.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > self.screen.get_size()[1]:
             self.rect.bottom = self.screen.get_size()[1]
-
+        # Actually move the ball on the screen
         self.rect.move_ip(*self.vector)
         self.display()
 
