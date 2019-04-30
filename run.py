@@ -42,7 +42,7 @@ class App():
         text_surf = font.render(text, True, color)
         return text_surf, text_surf.get_rect()
 
-    def button(self, text, x, y, w, h, ic, ac):
+    def button(self, text, x, y, w, h, ic, ac, action=None):
         """Create a buton.
 
         :param text: The button text
@@ -52,14 +52,18 @@ class App():
         :param h: The height of the button
         :param ic: The color of button when not hovering
         :param ac: The color of button when hovering
+        :param action: The action to take when clicked
         """
         mouse = pg.mouse.get_pos()
+        click = pg.mouse.get_pressed()
         if x+w > mouse[0] > x and y+h > mouse[1] > y:
             pg.draw.rect(
                 self.screen,
                 ac,
                 (x, y, w, h)
             )
+            if click[0] == 1 and action:
+                action()
         else:
             pg.draw.rect(
                 self.screen,
@@ -78,13 +82,22 @@ class App():
         self.screen.blit(text_surf, text_rect)
 
     def main_menu(self):
+
+        def begin_game():
+            self.running = True
+            self.at_menu = False
+            self.game_loop()
+
+        def quit_menu():
+            self.at_menu = False
+
         while self.at_menu:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        self.at_menu = False
+                        quit_menu()
                 if event.type == pg.QUIT:
-                    self.at_menu = False
+                    quit_menu()
             self.screen.fill(Colors.get('heavy_rough'))
             mouse = pg.mouse.get_pos()
             large_text = pg.font.Font(
@@ -106,7 +119,8 @@ class App():
                 "Begin",
                 *begin_loc,
                 Colors.get('darkgray'),
-                Colors.get('lightgray')
+                Colors.get('lightgray'),
+                action=begin_game
             )
             # Quit button
             quit_loc = (600, 450, 100, 50)
@@ -114,19 +128,26 @@ class App():
                 "Quit",
                 *quit_loc,
                 Colors.get('darkgray'),
-                Colors.get('lightgray')
+                Colors.get('lightgray'),
+                action=quit_menu
             )
             pg.display.flip()
-            self.clock.tick(FPS/5)
+            self.clock.tick(FPS/2)
 
     def game_loop(self):
+
+        def quit_game():
+            self.at_menu = True
+            self.running = False
+            self.main_menu()
+
         while self.running:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
-                        self.running = False
+                        quit_game()
                 if event.type == pg.QUIT:
-                    self.running = False
+                    quit_game()
 
             pressed_keys = pg.key.get_pressed()
 
