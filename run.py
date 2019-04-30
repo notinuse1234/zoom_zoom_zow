@@ -15,10 +15,22 @@ class App():
         self.screen = pygame.display.set_mode(self.size)
         self.ball = GolfBall(self.screen)
         self.running = True
+        self.colors = {
+            'black': (0, 0, 0),
+            'lawn': (86, 176, 0),
+            'fairway': (90, 215, 85),
+            'flag': (190, 80, 0),
+            'green': (0, 169, 0),
+            'green_fringe': (36, 168, 33),
+            'green_rough': (75, 210, 70),
+            'heavy_rough': (0, 99, 3),
+            'light_rough': (0, 170, 3),
+            'tee_area': (90, 215, 85),
+            'tree': (0, 45, 3),
+            'white': (255, 255, 255)
+        }
 
     def game_loop(self):
-        black = 0, 0, 0
-        lawn = 86, 176, 0
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -29,7 +41,7 @@ class App():
 
             pressed_keys = pygame.key.get_pressed()
 
-            self.screen.fill(lawn)
+            self.screen.fill(self.colors.get('green'))
             self.ball.update(pressed_keys)
             pygame.display.flip()
             self.clock.tick(30)
