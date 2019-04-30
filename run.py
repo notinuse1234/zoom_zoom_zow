@@ -6,29 +6,34 @@ import pygame
 from objects import GolfBall
 
 
-pygame.init()
-pygame.display.set_caption("zOoM ZoOm zOw")
+class App():
+    def __init__(self):
+        pygame.init()
+        pygame.display.set_caption("zOoM ZoOm zOw")
+        self.size = width, height = 960, 640
+        self.screen = pygame.display.set_mode(self.size)
+        self.ball = GolfBall(self.screen)
+        self.running = True
 
-size = width, height = 960, 640
-black = 0, 0, 0
+    def game_loop(self):
+        black = 0, 0, 0
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+                if event.type == pygame.QUIT:
+                    self.running = False
 
-screen = pygame.display.set_mode(size)
-screen.fill(black)
-ball = GolfBall(screen)
+            pressed_keys = pygame.key.get_pressed()
 
-running = True
+            self.screen.fill(black)
+            self.ball.update(pressed_keys)
+            pygame.display.flip()
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-        if event.type == pygame.QUIT:
-            running = False
-
-    pressed_keys = pygame.key.get_pressed()
-
-    screen.fill(black)
-    ball.update(pressed_keys)
-    pygame.display.flip()
+if __name__ == '__main__':
+    app = App()
+    app.game_loop()
+    pygame.quit()
+    sys.exit()
 
