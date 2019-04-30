@@ -18,6 +18,7 @@ class App():
 
     def game_loop(self):
         black = 0, 0, 0
+        lawn = 86, 176, 0
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
@@ -28,7 +29,7 @@ class App():
 
             pressed_keys = pygame.key.get_pressed()
 
-            self.screen.fill(black)
+            self.screen.fill(lawn)
             self.ball.update(pressed_keys)
             pygame.display.flip()
             self.clock.tick(30)
