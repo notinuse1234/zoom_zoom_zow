@@ -18,6 +18,8 @@ class Colors():
             'tee_area': (90, 215, 85),
             'tree': (0, 45, 3),
             'water': (60, 190, 250),
+            'lightgray': (211, 211, 211),
+            'darkgray': (169, 169, 169),
             'white': (255, 255, 255)
-        }.get(color)
+        }.get(color, (0, 0, 0))
 
