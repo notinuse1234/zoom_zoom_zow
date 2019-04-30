@@ -4,7 +4,7 @@ import sys
 import pygame
 
 from objects import GolfBall
-from resources import Colors
+from resources import Colors, Events
 
 
 class App():
