@@ -10,13 +10,13 @@ class GolfBall(pygame.sprite.Sprite):
         super(GolfBall, self).__init__()
         self.size = 80, 48
         self.screen = screen
-        self.image = pygame.transform.scale(
+        self.surf = pygame.transform.scale(
             pygame.image.load(
                 os.path.join(os.getcwd(), "resources", "golf_ball.png")
             ).convert(),
             self.size
         )
-        self.rect = self.image.get_rect()
+        self.rect = self.surf.get_rect()
         self.rect.bottom = self.screen.get_size()[1] - 10
         self.rect.right = self.screen.get_size()[0] / 2
         self.vector = (0, 0)
@@ -52,8 +52,8 @@ class GolfBall(pygame.sprite.Sprite):
         return rect.move(dx,dy)
 
     @property
-    def sprite(self):
-        return self.image
+    def image(self):
+        return self.surf
 
     def display(self):
-        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.surf, self.rect)
