@@ -9,6 +9,7 @@ class GolfBall(pygame.sprite.Sprite):
     def __init__(self, screen):
         super(GolfBall, self).__init__()
         self.size = 80, 48
+        self.radius = 40
         self.screen = screen
         self.surf = pygame.transform.scale(
             pygame.image.load(
