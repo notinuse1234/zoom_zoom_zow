@@ -31,6 +31,16 @@ class GolfBall(pygame.sprite.Sprite):
             self.vector = (self.speed, 0)
         #newpos = self.calcnewpos(self.rect, self.vector)
         #self.rect = newpos
+        # Keep ball on the screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > self.screen.get_size()[0]:
+            self.rect.right = self.screen.get_size()[0]
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > self.screen.get_size()[1]:
+            self.rect.bottom = self.screen.get_size()[1]
+
         self.rect.move_ip(*self.vector)
         self.display()
 
