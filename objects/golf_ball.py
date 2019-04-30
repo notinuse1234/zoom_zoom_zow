@@ -6,18 +6,18 @@ import pygame
 
 class GolfBall(pygame.sprite.Sprite):
 
-    def __init__(self, screen, vector):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self, screen):
+        super(GolfBall, self).__init__()
         self.size = 80, 48
         self.screen = screen
-        self.image = pygame.image.load(
-            os.path.join(os.getcwd(), "resources", "golf_ball.png")
-        ).convert()
-        self.image = pygame.transform.scale(self.image, self.size)
+        self.image = pygame.transform.scale(
+            pygame.image.load(
+                os.path.join(os.getcwd(), "resources", "golf_ball.png")
+            ).convert(),
+            self.size
+        )
         self.rect = self.image.get_rect()
-
-        self.area = screen.get_rect()
-        self.vector = vector
+        self.vector = (0,0)
 
     def update(self):
         newpos = self.calcnewpos(self.rect, self.vector)

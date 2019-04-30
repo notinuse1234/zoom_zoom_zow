@@ -10,17 +10,20 @@ pygame.init()
 pygame.display.set_caption("zOoM ZoOm zOw")
 
 size = width, height = 960, 640
-speed = [2, 2]
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
+ball = GolfBall(screen)
 
-ball = GolfBall(screen, speed)
+running = True
 
-while True:
+while running:
     for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
         if event.type == pygame.QUIT:
-            sys.exit(0)
+            running = False
 
     screen.fill(black)
     ball.update()
