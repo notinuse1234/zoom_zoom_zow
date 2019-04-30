@@ -11,6 +11,16 @@ FPS = 30
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 640
 
+
+def rp(relative_path):
+    """Get absolute path to a resource."""
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+
 class App():
     def __init__(self):
         """Initialize the game."""
@@ -30,7 +40,7 @@ class App():
         """
         # Create the font
         large_text = pg.font.Font(
-            'freesansbold.ttf',
+            rp(os.path.join('resources', 'freesansbold.ttf')),
             int(0.075 * self.screen.get_size()[0])
         )
         # Create the text object
@@ -89,7 +99,7 @@ class App():
             )
         # The button text
         small_text = pg.font.Font(
-            'freesansbold.ttf',
+            rp(os.path.join('resources', 'freesansbold.ttf')),
             int(0.02 * self.screen.get_size()[0])
         )
         text_surf, text_rect = self.text_objects(
@@ -123,7 +133,7 @@ class App():
             self.screen.fill(Colors.get('heavy_rough'))
             # Title
             large_text = pg.font.Font(
-                'freesansbold.ttf',
+                rp(os.path.join('resources', 'freesansbold.ttf')),
                 int(0.075 * self.screen.get_size()[0])
             )
             text_surf, text_rect = self.text_objects(
