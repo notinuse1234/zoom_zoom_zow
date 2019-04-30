@@ -14,8 +14,10 @@ class Colors():
             'green_rough': (75, 210, 70),
             'heavy_rough': (0, 99, 3),
             'light_rough': (0, 170, 3),
+            'sand': (250, 180, 0),
             'tee_area': (90, 215, 85),
             'tree': (0, 45, 3),
+            'water': (60, 190, 250),
             'white': (255, 255, 255)
         }.get(color)
 
