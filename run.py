@@ -6,6 +6,8 @@ import pygame
 from objects import GolfBall
 from resources import Colors, Events
 
+FPS = 30
+
 
 class App():
     def __init__(self):
@@ -31,7 +33,7 @@ class App():
             self.screen.fill(Colors.get('tee_area'))
             self.ball.update(pressed_keys)
             pygame.display.flip()
-            self.clock.tick(30)
+            self.clock.tick(FPS)
 
 if __name__ == '__main__':
     app = App()
