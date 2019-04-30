@@ -27,7 +27,7 @@ class GolfBall(pg.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.rect.bottom = self.screen.get_size()[1] - 10
         self.rect.right = self.screen.get_size()[0] / 2
-        self.vector = (0, 0)
+        self.vector = [0, 0]
         self.speed = 20
 
     def update(self, pressed_keys):
@@ -35,15 +35,17 @@ class GolfBall(pg.sprite.Sprite):
 
         :param pressed_keys: A dict of pressed keys this fram
         """
+        self.vector = [0, 0]
         if pressed_keys[pg.K_UP]:
-            self.vector = (0, -self.speed)
+            self.vector[1] = -self.speed
         if pressed_keys[pg.K_DOWN]:
-            self.vector = (0, self.speed)
+            self.vector[1] = self.speed
         if pressed_keys[pg.K_LEFT]:
-            self.vector = (-self.speed, 0)
+            self.vector[0] = -self.speed
         if pressed_keys[pg.K_RIGHT]:
-            self.vector = (self.speed, 0)
-        #newpos = self.calcnewpos(self.rect, self.vector)
+            self.vector[0] = self.speed
+        # Actually move the ball on the screen
+        self.rect.move_ip(*self.vector)
         # Keep ball on the screen
         if self.rect.left < 0:
             self.rect.left = 0
@@ -53,8 +55,6 @@ class GolfBall(pg.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > self.screen.get_size()[1]:
             self.rect.bottom = self.screen.get_size()[1]
-        # Actually move the ball on the screen
-        self.rect.move_ip(*self.vector)
         self.display()
 
     def calcnewpos(self, rect, vector):
