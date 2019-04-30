@@ -13,6 +13,7 @@ size = width, height = 960, 640
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
+screen.fill(black)
 ball = GolfBall(screen)
 
 running = True
@@ -25,8 +26,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    pressed_keys = pygame.key.get_pressed()
+
     screen.fill(black)
-    ball.update()
-    ball.display()
+    ball.update(pressed_keys)
     pygame.display.flip()
 

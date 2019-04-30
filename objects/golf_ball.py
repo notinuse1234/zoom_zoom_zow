@@ -17,11 +17,22 @@ class GolfBall(pygame.sprite.Sprite):
             self.size
         )
         self.rect = self.image.get_rect()
-        self.vector = (0,0)
+        self.vector = (0, 0)
+        self.speed = 1
 
-    def update(self):
-        newpos = self.calcnewpos(self.rect, self.vector)
-        self.rect = newpos
+    def update(self, pressed_keys):
+        if pressed_keys[pygame.K_UP]:
+            self.vector = (0, -self.speed)
+        if pressed_keys[pygame.K_DOWN]:
+            self.vector = (0, self.speed)
+        if pressed_keys[pygame.K_LEFT]:
+            self.vector = (-self.speed, 0)
+        if pressed_keys[pygame.K_RIGHT]:
+            self.vector = (self.speed, 0)
+        #newpos = self.calcnewpos(self.rect, self.vector)
+        #self.rect = newpos
+        self.rect.move_ip(*self.vector)
+        self.display()
 
     def calcnewpos(self, rect, vector):
         (angle,z) = vector
