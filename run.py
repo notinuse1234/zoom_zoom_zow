@@ -10,6 +10,7 @@ class App():
     def __init__(self):
         pygame.init()
         pygame.display.set_caption("zOoM ZoOm zOw")
+        self.clock = pygame.time.Clock()
         self.size = width, height = 960, 640
         self.screen = pygame.display.set_mode(self.size)
         self.ball = GolfBall(self.screen)
@@ -30,6 +31,7 @@ class App():
             self.screen.fill(black)
             self.ball.update(pressed_keys)
             pygame.display.flip()
+            self.clock.tick(30)
 
 if __name__ == '__main__':
     app = App()
