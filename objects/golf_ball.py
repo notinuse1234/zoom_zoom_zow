@@ -1,18 +1,18 @@
 import os
 import math
 
-import pygame
+import pygame as pg
 
 
-class GolfBall(pygame.sprite.Sprite):
+class GolfBall(pg.sprite.Sprite):
 
     def __init__(self, screen):
         super(GolfBall, self).__init__()
         self.size = 80, 48
         self.radius = 40
         self.screen = screen
-        self.surf = pygame.transform.scale(
-            pygame.image.load(
+        self.surf = pg.transform.scale(
+            pg.image.load(
                 os.path.join(os.getcwd(), "resources", "golf_ball.png")
             ).convert(),
             self.size
@@ -24,13 +24,13 @@ class GolfBall(pygame.sprite.Sprite):
         self.speed = 5
 
     def update(self, pressed_keys):
-        if pressed_keys[pygame.K_UP]:
+        if pressed_keys[pg.K_UP]:
             self.vector = (0, -self.speed)
-        if pressed_keys[pygame.K_DOWN]:
+        if pressed_keys[pg.K_DOWN]:
             self.vector = (0, self.speed)
-        if pressed_keys[pygame.K_LEFT]:
+        if pressed_keys[pg.K_LEFT]:
             self.vector = (-self.speed, 0)
-        if pressed_keys[pygame.K_RIGHT]:
+        if pressed_keys[pg.K_RIGHT]:
             self.vector = (self.speed, 0)
         #newpos = self.calcnewpos(self.rect, self.vector)
         #self.rect = newpos
