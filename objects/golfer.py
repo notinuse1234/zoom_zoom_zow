@@ -56,15 +56,19 @@ class Golfer(pg.sprite.Sprite):
         if pressed_keys[pg.K_UP]:
             self.vector[1] = -self.speed
             self.set_full_swing()
+            self.club.set_full_swing()
         if pressed_keys[pg.K_DOWN]:
             self.vector[1] = self.speed
             self.set_resting()
+            self.club.set_resting()
         if pressed_keys[pg.K_LEFT]:
             self.vector[0] = -self.speed
             self.set_followthru()
+            self.club.set_followthru()
         if pressed_keys[pg.K_RIGHT]:
             self.vector[0] = self.speed
             self.set_mid_swing()
+            self.club.set_mid_swing()
         # Actually move the ball on the screen
         self.rect.move_ip(*self.vector)
         # Keep ball on the screen
