@@ -6,10 +6,11 @@ import pygame as pg
 
 class Golfer(pg.sprite.Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, club):
         """Initialize the golfer.
 
         :param screen: The pygame display
+        :param club: The golfer's club
         """
         super(Golfer, self).__init__()
         self.screen = screen
@@ -23,6 +24,7 @@ class Golfer(pg.sprite.Sprite):
         self.rect.right = self.screen.get_size()[0] / 2 - 75
         self.vector = [0, 0]
         self.speed = 0
+        self.club = club
 
     def set_image(self, image_name):
         # Set the image and set it to the defined size

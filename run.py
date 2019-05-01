@@ -33,7 +33,7 @@ class App():
         self.running = False
         self.ball = GolfBall(self.screen)
         self.club = GolfClub(self.screen)
-        self.golfer = Golfer(self.screen)
+        self.golfer = Golfer(self.screen, self.club)
 
     def display_message(self, text):
         """Display a message on the screen for 2 seconds.
