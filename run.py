@@ -169,7 +169,7 @@ class App():
 
     def swing_meter(self):
         """The swing meter."""
-        x = self.screen.get_size()[0] / 2 - 150
+        x = self.screen.get_size()[0] / 2 - 175
         y = self.screen.get_size()[1] - 40
         w, h = 300, 20
         pg.draw.rect(
