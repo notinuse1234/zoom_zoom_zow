@@ -4,34 +4,34 @@ import math
 import pygame as pg
 
 
-class Golfer(pg.sprite.Sprite):
+class GolfClub(pg.sprite.Sprite):
 
     def __init__(self, screen):
-        """Initialize the golfer.
+        """Initialize the golf club.
 
         :param screen: The pygame display
         """
-        super(Golfer, self).__init__()
+        super(GolfClub, self).__init__()
         self.screen = screen
-        self.size = 110, 200
+        self.size = 100, 100
         # Set the radius for detecting collisions
         self.radius = 50
         # Set the image and set it to the defined size 
         self.surf = pg.transform.scale(
             pg.image.load(
-                os.path.join(os.getcwd(), "resources", "golfer.png")
+                os.path.join(os.getcwd(), "resources", "golf_club.png")
             ).convert_alpha(),
             self.size
         )
         # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
         self.rect.bottom = self.screen.get_size()[1] - 20
-        self.rect.right = self.screen.get_size()[0] / 2 - 75
+        self.rect.right = self.screen.get_size()[0] / 2 - 30
         self.vector = [0, 0]
-        self.speed = 0
+        self.speed = 15
 
     def update(self, pressed_keys):
-        """Update the golfer's location.
+        """Update the golf club's location.
 
         :param pressed_keys: A dict of pressed keys this fram
         """

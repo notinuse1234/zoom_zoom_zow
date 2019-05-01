@@ -4,7 +4,7 @@ import time
 
 import pygame as pg
 
-from objects import GolfBall, Golfer
+from objects import GolfBall, GolfClub, Golfer
 from resources import Colors, Events
 
 FPS = 30
@@ -32,6 +32,7 @@ class App():
         self.at_menu = True
         self.running = False
         self.ball = GolfBall(self.screen)
+        self.club = GolfClub(self.screen)
         self.golfer = Golfer(self.screen)
 
     def display_message(self, text):
@@ -188,6 +189,7 @@ class App():
 
             self.screen.fill(Colors.get('tee_area'))
             self.golfer.update(pressed_keys)
+            self.club.update(pressed_keys)
             self.ball.update(pressed_keys)
             pg.display.flip()
             self.clock.tick(FPS)
