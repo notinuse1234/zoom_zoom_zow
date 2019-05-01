@@ -186,9 +186,13 @@ class App():
         )
         # draw each bar
         for i in range(x, x+w, 10):
+            if i == x + w - 100:
+                color = Colors.get('flag')
+            else:
+                color = Colors.get('darkgray')
             pg.draw.rect(
                 self.screen,
-                Colors.get('darkgray'),
+                color,
                 (i+2, y+2, 6, h-2)
             )
 
