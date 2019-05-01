@@ -31,7 +31,7 @@ class Golfer(pg.sprite.Sprite):
         self.speed = 0
 
     def update(self, pressed_keys):
-        """Update the golf ball's location.
+        """Update the golfer's location.
 
         :param pressed_keys: A dict of pressed keys this fram
         """
