@@ -6,6 +6,7 @@ class Colors():
     def get(color):
         return {
             'black': (0, 0, 0),
+            'darkdarkgray': (100, 100, 100),
             'lawn': (86, 176, 0),
             'fairway': (90, 215, 85),
             'flag': (255, 215, 0),

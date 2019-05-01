@@ -167,6 +167,17 @@ class App():
             pg.display.flip()
             self.clock.tick(FPS/2)
 
+    def swing_meter(self):
+        """The swing meter."""
+        x = self.screen.get_size()[0] / 2 - 150
+        y = self.screen.get_size()[1] - 40
+        w, h = 300, 20
+        pg.draw.rect(
+            self.screen,
+            Colors.get('darkdarkgray'),
+            (x, y, w, h)
+        )
+
     def game_loop(self):
         """The game loop, when Begin is pressed."""
 
@@ -188,6 +199,7 @@ class App():
             pressed_keys = pg.key.get_pressed()
 
             self.screen.fill(Colors.get('tee_area'))
+            self.swing_meter()
             self.golfer.update(pressed_keys)
             self.club.update(pressed_keys)
             self.ball.update(pressed_keys)
