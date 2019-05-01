@@ -169,14 +169,28 @@ class App():
 
     def swing_meter(self):
         """The swing meter."""
-        x = self.screen.get_size()[0] / 2 - 175
+        x = self.screen.get_size()[0] // 2 - 175
         y = self.screen.get_size()[1] - 40
         w, h = 300, 20
+        # draw the black outline
+        pg.draw.rect(
+            self.screen,
+            Colors.get('black'),
+            (x-2, y-2, w+4, h+4)
+        )
+        # draw the gray box
         pg.draw.rect(
             self.screen,
             Colors.get('darkdarkgray'),
             (x, y, w, h)
         )
+        # draw each bar
+        for i in range(x, x+w, 10):
+            pg.draw.rect(
+                self.screen,
+                Colors.get('darkgray'),
+                (i+2, y+2, 6, h-2)
+            )
 
     def game_loop(self):
         """The game loop, when Begin is pressed."""
