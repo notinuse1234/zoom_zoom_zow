@@ -19,8 +19,10 @@ class GolfClub(pg.sprite.Sprite):
         self.set_resting()
         # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
-        self.rect.bottom = self.screen.get_size()[1] - 20
-        self.rect.right = self.screen.get_size()[0] / 2 - 30
+        self.original_bottom_loc = self.screen.get_size()[1] - 20
+        self.original_right_loc = self.screen.get_size()[0] / 2 - 30
+        self.rect.bottom = self.original_bottom_loc
+        self.rect.right = self.original_right_loc
         self.vector = [0, 0]
         self.speed = 0
 
@@ -54,15 +56,23 @@ class GolfClub(pg.sprite.Sprite):
         if pressed_keys[pg.K_UP]:
             self.vector[1] = -self.speed
             self.set_full_swing()
+            self.rect.right = self.original_right_loc - 110
+            self.rect.bottom = self.original_bottom_loc - 120
         if pressed_keys[pg.K_DOWN]:
             self.vector[1] = self.speed
             self.set_resting()
+            self.rect.right = self.original_right_loc
+            self.rect.bottom = self.original_bottom_loc
         if pressed_keys[pg.K_LEFT]:
             self.vector[0] = -self.speed
             self.set_followthru()
+            self.rect.right = self.original_right_loc - 110
+            self.rect.bottom = self.original_bottom_loc - 120
         if pressed_keys[pg.K_RIGHT]:
             self.vector[0] = self.speed
             self.set_mid_swing()
+            self.rect.right = self.original_right_loc - 100
+            self.rect.bottom = self.original_bottom_loc
         # Actually move the ball on the screen
         self.rect.move_ip(*self.vector)
         # Keep ball on the screen
