@@ -201,7 +201,7 @@ class App():
             self.screen.fill(Colors.get('tee_area'))
             self.swing_meter()
             self.golfer.update(pressed_keys)
-            self.club.update(pressed_keys)
+            self.club.update()
             self.ball.update(pressed_keys)
             pg.display.flip()
             self.clock.tick(FPS)

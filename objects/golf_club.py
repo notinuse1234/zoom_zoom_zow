@@ -54,31 +54,7 @@ class GolfClub(pg.sprite.Sprite):
         self.rect.right = self.original_right_loc - 110
         self.rect.bottom = self.original_bottom_loc - 120
 
-    def update(self, pressed_keys):
-        """Update the golf club's location.
-
-        :param pressed_keys: A dict of pressed keys this fram
-        """
-        self.vector = [0, 0]
-        if pressed_keys[pg.K_UP]:
-            self.vector[1] = -self.speed
-        if pressed_keys[pg.K_DOWN]:
-            self.vector[1] = self.speed
-        if pressed_keys[pg.K_LEFT]:
-            self.vector[0] = -self.speed
-        if pressed_keys[pg.K_RIGHT]:
-            self.vector[0] = self.speed
-        # Actually move the ball on the screen
-        self.rect.move_ip(*self.vector)
-        # Keep ball on the screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > self.screen.get_size()[0]:
-            self.rect.right = self.screen.get_size()[0]
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > self.screen.get_size()[1]:
-            self.rect.bottom = self.screen.get_size()[1]
+    def update(self):
         self.display()
 
     def calcnewpos(self, rect, vector):
