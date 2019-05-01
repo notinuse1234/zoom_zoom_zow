@@ -25,8 +25,10 @@ class GolfBall(pg.sprite.Sprite):
         )
         # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
-        self.rect.bottom = self.screen.get_size()[1] - 30
-        self.rect.right = self.screen.get_size()[0] / 2 - 10
+        self.original_bottom_loc = self.screen.get_size()[1] - 90
+        self.original_right_loc = self.screen.get_size()[0] / 2 - 17.5
+        self.rect.bottom = self.original_bottom_loc
+        self.rect.right = self.original_right_loc
         self.vector = [0, 0]
         self.speed = 20
 

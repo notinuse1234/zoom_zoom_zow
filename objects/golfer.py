@@ -20,8 +20,8 @@ class Golfer(pg.sprite.Sprite):
         self.set_resting()
         # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
-        self.rect.bottom = self.screen.get_size()[1] - 20
-        self.rect.right = self.screen.get_size()[0] / 2 - 75
+        self.rect.bottom = self.screen.get_size()[1] - 60
+        self.rect.right = self.screen.get_size()[0] / 2 - 50
         self.vector = [0, 0]
         self.speed = 0
         self.club = club

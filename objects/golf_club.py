@@ -17,8 +17,8 @@ class GolfClub(pg.sprite.Sprite):
         # Set the radius for detecting collisions
         self.radius = 50
         # Set the rectangle, or the box where it is drawn
-        self.original_bottom_loc = self.screen.get_size()[1] - 20
-        self.original_right_loc = self.screen.get_size()[0] / 2 - 30
+        self.original_bottom_loc = self.screen.get_size()[1] - 60
+        self.original_right_loc = self.screen.get_size()[0] / 2 - 5
         self.vector = [0, 0]
         self.speed = 0
         self.set_resting()
