@@ -230,7 +230,13 @@ class App():
             # Display the swing meter
             self.swing_meter(pressed_keys)
             # Get power and accuracy from the golfer
-            power, accuracy = self.golfer.update(pressed_keys)
+            if self.ball.teed_up and pressed_keys[pg.K_SPACE]:
+                power, accuracy = self.golfer.update(
+                    pressed_keys,
+                    start_swing=True
+                )
+            else:
+                power, accuracy = self.golfer.update(pressed_keys)
             #self.club.update()
             if self.ball.on_ground:
                 self.ball.update(power, accuracy)
