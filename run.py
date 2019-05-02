@@ -168,7 +168,7 @@ class App():
             pg.display.flip()
             self.clock.tick(FPS/2)
 
-    def swing_meter(self):
+    def swing_meter(self, pressed_keys):
         """The swing meter."""
         x = self.screen.get_size()[0] // 2 - 300
         y = self.screen.get_size()[1] - 40
@@ -185,6 +185,12 @@ class App():
             Colors.get('darkdarkgray'),
             (x, y, w, h)
         )
+        if self.golfer.is_in_swing:
+            pg.draw.rect(
+                self.screen,
+                Colors.get('water'),
+                (x, y, w, h)
+            )
         # draw each bar
         for i in range(x, x+w, 10):
             if i == x + w - (w / 5):
@@ -216,13 +222,21 @@ class App():
                     quit_game()
 
             pressed_keys = pg.key.get_pressed()
+            # If the ball is on the ground and they press T, tee up
+            if self.ball.on_ground and pressed_keys[pg.K_t]:
+                self.ball.tee_up()
 
             self.screen.fill(Colors.get('tee_area'))
-            self.swing_meter()
+            # Display the swing meter
+            self.swing_meter(pressed_keys)
+            # Get power and accuracy from the golfer
+            power, accuracy = self.golfer.update(pressed_keys)
+            #self.club.update()
+            if self.ball.on_ground:
+                self.ball.update(power, accuracy)
+            else:
+                self.ball.update()
             self.big_ball.update()
-            self.golfer.update(pressed_keys)
-            self.club.update()
-            self.ball.update(pressed_keys)
             pg.display.flip()
             self.clock.tick(FPS)
 
