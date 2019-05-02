@@ -30,7 +30,7 @@ class GolfBall(pg.sprite.Sprite):
         self.rect.bottom = self.original_bottom_loc
         self.rect.right = self.original_right_loc
         self.vector = [0, 0]
-        self.speed = 20
+        self.speed = 0
 
     def update(self, pressed_keys):
         """Update the golf ball's location.
