@@ -26,7 +26,7 @@ class GolfClub(pg.sprite.Sprite):
         self.original_bottom_loc = self.screen.get_size()[1] - 60
         self.original_right_loc = self.screen.get_size()[0] / 2 - 5
         self.vector = [0, 0]
-        self.speed = 0
+        self.power = 30
         self.set_resting()
 
     def get_images(self):
