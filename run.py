@@ -7,7 +7,7 @@ import pygame as pg
 from objects import GolfBall, BigGolfBall, GolfClub, Golfer
 from resources import Colors, Events
 
-FPS = 30
+FPS = 45
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 640
 
@@ -166,7 +166,7 @@ class App():
                 action=quit_menu
             )
             pg.display.flip()
-            self.clock.tick(FPS/2)
+            self.clock.tick(FPS)
 
     def swing_meter(self, pressed_keys):
         """The swing meter."""
@@ -230,7 +230,13 @@ class App():
             # Display the swing meter
             self.swing_meter(pressed_keys)
             # Get power and accuracy from the golfer
-            power, accuracy = self.golfer.update(pressed_keys)
+            if self.ball.teed_up and pressed_keys[pg.K_SPACE]:
+                power, accuracy = self.golfer.update(
+                    pressed_keys,
+                    start_swing=True
+                )
+            else:
+                power, accuracy = self.golfer.update(pressed_keys)
             #self.club.update()
             if self.ball.on_ground:
                 self.ball.update(power, accuracy)
@@ -238,6 +244,7 @@ class App():
                 self.ball.update()
             self.big_ball.update()
             pg.display.flip()
+            #print(self.clock.get_fps())
             self.clock.tick(FPS)
 
 

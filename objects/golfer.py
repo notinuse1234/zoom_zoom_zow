@@ -34,7 +34,7 @@ class Golfer(pg.sprite.Sprite):
         self.club = club
         # Set the animation stuff
         self.is_in_swing = False
-        self.animation_frames = 3  # the frames per animation
+        self.animation_frames = 5  # the frames per animation
         self.current_frame = 0
 
     def get_images(self):
@@ -94,14 +94,15 @@ class Golfer(pg.sprite.Sprite):
         #self.club.display()
 
     def update_frame_dependent(self):
-        """Update the sprite image every 3 frames."""
+        """Update the sprite image every 5 frames during a swing."""
         power, speed = 0, 0
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
             self.current_frame = 0
+            if self.image_index == len(self.image_indices) - 2:
+                power, speed = 30, 0
             if self.image_index == len(self.image_indices) - 1:
                 self.is_in_swing = False
-                power, speed = 10, 0
             self.image_index = (self.image_index + 1) % \
                                len(self.image_indices)
             self.set_image(image_index=self.image_index)
@@ -109,32 +110,27 @@ class Golfer(pg.sprite.Sprite):
         self.display()
         return power, speed
 
-    def update(self, pressed_keys):
+    def update(self, pressed_keys, start_swing=False):
         """Update the golfer's location.
 
         :param pressed_keys: A dict of pressed keys this fram
         """
         if self.is_in_swing:
             return self.update_frame_dependent()
-        if pressed_keys[pg.K_SPACE]:
+        if start_swing:
             self.is_in_swing = True
             self.update_frame_dependent()
             return None, None
-        self.vector = [0, 0]
         if pressed_keys[pg.K_UP]:
-            self.vector[1] = -self.speed
             self.set_full_swing()
             self.club.set_full_swing()
         if pressed_keys[pg.K_DOWN]:
-            self.vector[1] = self.speed
             self.set_resting()
             self.club.set_resting()
         if pressed_keys[pg.K_LEFT]:
-            self.vector[0] = -self.speed
             self.set_followthru()
             self.club.set_followthru()
         if pressed_keys[pg.K_RIGHT]:
-            self.vector[0] = self.speed
             self.set_mid_swing()
             self.club.set_mid_swing()
         self.club.update()

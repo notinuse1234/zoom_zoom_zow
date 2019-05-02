@@ -27,11 +27,8 @@ class GolfBall(pg.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.original_bottom_loc = self.screen.get_size()[1] - 90
         self.original_right_loc = self.screen.get_size()[0] / 2 - 17.5
-        self.rect.bottom = self.original_bottom_loc
-        self.rect.right = self.original_right_loc
-        self.vector = [0, 0]
         self.speed = 0
-        self.on_ground = True
+        self.tee_up()
 
     def update(self, power=None, accuracy=None):
         """Update the golf ball's location.
@@ -42,6 +39,7 @@ class GolfBall(pg.sprite.Sprite):
         if power is not None and accuracy is not None:
             if power > 0:
                 self.on_ground = False
+                self.teed_up = False
             self.vector[1] = -power
             self.vector[0] = accuracy
         # Actually move the ball on the screen
@@ -52,6 +50,7 @@ class GolfBall(pg.sprite.Sprite):
         if self.rect.right > self.screen.get_size()[0]:
             self.rect.right = self.screen.get_size()[0]
         if self.rect.top < 0:
+            self.vector = [0, 0]
             self.on_ground = True
             self.rect.top = 0
         if self.rect.bottom > self.screen.get_size()[1]:
@@ -61,6 +60,7 @@ class GolfBall(pg.sprite.Sprite):
     def tee_up(self):
         self.vector = [0, 0]
         self.on_ground = True
+        self.teed_up = True
         self.rect.bottom = self.original_bottom_loc
         self.rect.right = self.original_right_loc
 
