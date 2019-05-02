@@ -99,9 +99,10 @@ class Golfer(pg.sprite.Sprite):
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
             self.current_frame = 0
+            if self.image_index == len(self.image_indices) - 2:
+                power, speed = 10, 0
             if self.image_index == len(self.image_indices) - 1:
                 self.is_in_swing = False
-                power, speed = 10, 0
             self.image_index = (self.image_index + 1) % \
                                len(self.image_indices)
             self.set_image(image_index=self.image_index)
