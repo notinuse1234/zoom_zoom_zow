@@ -31,21 +31,19 @@ class GolfBall(pg.sprite.Sprite):
         self.rect.right = self.original_right_loc
         self.vector = [0, 0]
         self.speed = 0
+        self.on_ground = True
 
-    def update(self, pressed_keys):
+    def update(self, power=None, accuracy=None):
         """Update the golf ball's location.
 
-        :param pressed_keys: A dict of pressed keys this fram
+        :param power: The power the golfer hit with
+        :param accuracy: The accuracy the golfer hit with
         """
-        self.vector = [0, 0]
-        if pressed_keys[pg.K_UP]:
-            self.vector[1] = -self.speed
-        if pressed_keys[pg.K_DOWN]:
-            self.vector[1] = self.speed
-        if pressed_keys[pg.K_LEFT]:
-            self.vector[0] = -self.speed
-        if pressed_keys[pg.K_RIGHT]:
-            self.vector[0] = self.speed
+        if power is not None and accuracy is not None:
+            if power > 0:
+                self.on_ground = False
+            self.vector[1] = -power
+            self.vector[0] = accuracy
         # Actually move the ball on the screen
         self.rect.move_ip(*self.vector)
         # Keep ball on the screen
@@ -54,10 +52,17 @@ class GolfBall(pg.sprite.Sprite):
         if self.rect.right > self.screen.get_size()[0]:
             self.rect.right = self.screen.get_size()[0]
         if self.rect.top < 0:
+            self.on_ground = True
             self.rect.top = 0
         if self.rect.bottom > self.screen.get_size()[1]:
             self.rect.bottom = self.screen.get_size()[1]
         self.display()
+
+    def tee_up(self):
+        self.vector = [0, 0]
+        self.on_ground = True
+        self.rect.bottom = self.original_bottom_loc
+        self.rect.right = self.original_right_loc
 
     def calcnewpos(self, rect, vector):
         (angle,z) = vector

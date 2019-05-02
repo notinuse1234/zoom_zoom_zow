@@ -76,34 +76,38 @@ class Golfer(pg.sprite.Sprite):
     def set_resting(self):
         self.set_image(image_name="golfer.png")
         self.club.set_resting()
-        self.club.display()
+        #self.club.display()
 
     def set_mid_swing(self):
         self.set_image(image_name="golfer_mid.png")
         self.club.set_mid_swing()
-        self.club.display()
+        #self.club.display()
 
     def set_full_swing(self):
         self.set_image(image_name="golfer_full.png")
         self.club.set_full_swing()
-        self.club.display()
+        #self.club.display()
 
     def set_followthru(self):
         self.set_image(image_name="golfer_followthru.png")
         self.club.set_followthru()
-        self.club.display()
+        #self.club.display()
 
     def update_frame_dependent(self):
         """Update the sprite image every 3 frames."""
+        power, speed = 0, 0
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
             self.current_frame = 0
             if self.image_index == len(self.image_indices) - 1:
                 self.is_in_swing = False
+                power, speed = 10, 0
             self.image_index = (self.image_index + 1) % \
                                len(self.image_indices)
             self.set_image(image_index=self.image_index)
+        self.club.update()
         self.display()
+        return power, speed
 
     def update(self, pressed_keys):
         """Update the golfer's location.
@@ -111,12 +115,11 @@ class Golfer(pg.sprite.Sprite):
         :param pressed_keys: A dict of pressed keys this fram
         """
         if self.is_in_swing:
-            self.update_frame_dependent()
-            return
+            return self.update_frame_dependent()
         if pressed_keys[pg.K_SPACE]:
             self.is_in_swing = True
             self.update_frame_dependent()
-            return
+            return None, None
         self.vector = [0, 0]
         if pressed_keys[pg.K_UP]:
             self.vector[1] = -self.speed
@@ -134,7 +137,9 @@ class Golfer(pg.sprite.Sprite):
             self.vector[0] = self.speed
             self.set_mid_swing()
             self.club.set_mid_swing()
+        self.club.update()
         self.display()
+        return None, None
 
     def calcnewpos(self, rect, vector):
         (angle,z) = vector
