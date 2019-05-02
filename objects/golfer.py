@@ -34,7 +34,7 @@ class Golfer(pg.sprite.Sprite):
         self.club = club
         # Set the animation stuff
         self.is_in_swing = False
-        self.animation_frames = 3  # the frames per animation
+        self.animation_frames = 5  # the frames per animation
         self.current_frame = 0
 
     def get_images(self):
@@ -94,7 +94,7 @@ class Golfer(pg.sprite.Sprite):
         #self.club.display()
 
     def update_frame_dependent(self):
-        """Update the sprite image every 3 frames."""
+        """Update the sprite image every 5 frames during a swing."""
         power, speed = 0, 0
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:

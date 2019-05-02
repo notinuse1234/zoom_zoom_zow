@@ -7,7 +7,7 @@ import pygame as pg
 from objects import GolfBall, BigGolfBall, GolfClub, Golfer
 from resources import Colors, Events
 
-FPS = 30
+FPS = 45
 SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 640
 
@@ -166,7 +166,7 @@ class App():
                 action=quit_menu
             )
             pg.display.flip()
-            self.clock.tick(FPS/2)
+            self.clock.tick(FPS)
 
     def swing_meter(self, pressed_keys):
         """The swing meter."""
@@ -238,6 +238,7 @@ class App():
                 self.ball.update()
             self.big_ball.update()
             pg.display.flip()
+            #print(self.clock.get_fps())
             self.clock.tick(FPS)
 
 
