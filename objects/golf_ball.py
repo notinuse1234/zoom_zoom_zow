@@ -70,3 +70,34 @@ class GolfBall(pg.sprite.Sprite):
 
     def display(self):
         self.screen.blit(self.surf, self.rect)
+
+
+class BigGolfBall(GolfBall):
+    def __init__(self, screen):
+        """Initialize the golf ball.
+
+        :param screen: The pygame display
+        """
+        super(BigGolfBall, self).__init__(screen)
+        self.size = 96, 96
+        # Set the radius for detecting collisions
+        self.radius = 48
+        # Set the image and set it to the defined size 
+        self.surf = pg.transform.scale(
+            pg.image.load(
+                os.path.join(os.getcwd(), "resources", "golf_ball.png")
+            ).convert_alpha(),
+            self.size
+        )
+        # Set the rectangle, or the box where it is drawn
+        self.rect = self.surf.get_rect()
+        self.original_bottom_loc = self.screen.get_size()[1] - 20
+        self.original_right_loc = self.screen.get_size()[0] - 20
+        self.rect.bottom = self.original_bottom_loc
+        self.rect.right = self.original_right_loc
+        self.vector = [0, 0]
+        self.speed = 0
+
+    def update(self):
+        self.display()
+
