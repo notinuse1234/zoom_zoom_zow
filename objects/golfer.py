@@ -33,6 +33,7 @@ class Golfer(pg.sprite.Sprite):
         self.speed = 0
         self.club = club
         # Set the animation stuff
+        self.is_in_swing = False
         self.animation_frames = 3  # the frames per animation
         self.current_frame = 0
 
@@ -60,14 +61,14 @@ class Golfer(pg.sprite.Sprite):
                 2: self.set_full_swing,
                 3: self.set_mid_swing,
                 4: self.set_resting,
-                5: self.set_followthru,
-                6: self.set_resting
+                5: self.set_followthru
             }
         )
 
     def set_image(self, image_index=None, image_name='golfer.png'):
         # Set the image and set it to the defined size
-        if image_index and image_index in range(0, len(self.image_indices)):
+        if image_index is not None and \
+           image_index in range(0, len(self.image_indices)):
             self.image_indices.get(image_index)()
         elif image_name and image_name in self.images:
             self.surf = self.images.get(image_name)
@@ -97,6 +98,8 @@ class Golfer(pg.sprite.Sprite):
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
             self.current_frame = 0
+            if self.image_index == len(self.image_indices) - 1:
+                self.is_in_swing = False
             self.image_index = (self.image_index + 1) % \
                                len(self.image_indices)
             self.set_image(image_index=self.image_index)
@@ -107,7 +110,11 @@ class Golfer(pg.sprite.Sprite):
 
         :param pressed_keys: A dict of pressed keys this fram
         """
+        if self.is_in_swing:
+            self.update_frame_dependent()
+            return
         if pressed_keys[pg.K_SPACE]:
+            self.is_in_swing = True
             self.update_frame_dependent()
             return
         self.vector = [0, 0]
