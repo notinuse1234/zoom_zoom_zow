@@ -6,18 +6,25 @@ import pygame as pg
 
 class Golfer(pg.sprite.Sprite):
 
-    def __init__(self, screen, club):
+    def __init__(self, screen, clock, club):
         """Initialize the golfer.
 
         :param screen: The pygame display
+        :param clock: The pygame game clock
         :param club: The golfer's club
         """
         super(Golfer, self).__init__()
         self.screen = screen
+        self.clock = clock
         self.size = 110, 200
         # Set the radius for detecting collisions
         self.radius = 50
-        self.set_resting()
+
+        # Set the sprite images
+        self.images, self.image_indices = self.get_images()
+        self.image_index = 0
+        self.set_image()
+
         # Set the rectangle, or the box where it is drawn
         self.rect = self.surf.get_rect()
         self.rect.bottom = self.screen.get_size()[1] - 60
@@ -25,33 +32,91 @@ class Golfer(pg.sprite.Sprite):
         self.vector = [0, 0]
         self.speed = 0
         self.club = club
+        # Set the animation stuff
+        self.is_in_swing = False
+        self.animation_frames = 3  # the frames per animation
+        self.current_frame = 0
 
-    def set_image(self, image_name):
-        # Set the image and set it to the defined size
-        self.surf = pg.transform.scale(
-            pg.image.load(
-                os.path.join(os.getcwd(), "resources", image_name)
-            ).convert_alpha(),
-            self.size
+    def get_images(self):
+        """Get all images defined by the filenames and return them.
+
+        :return: A dict of filename: pygame.Surface and index dict
+        :rtype: dict of str: pygame.Surface and dict of int: function
+        """
+        filenames = [
+            'golfer.png', 'golfer_mid.png',
+            'golfer_full.png', 'golfer_followthru.png'
+        ]
+        return (
+            {
+                filename: pg.transform.scale(
+                    pg.image.load(
+                        os.path.join(os.getcwd(), "resources", filename)
+                    ).convert_alpha(),
+                    self.size
+                ) for filename in filenames 
+            }, {
+                0: self.set_resting,
+                1: self.set_mid_swing,
+                2: self.set_full_swing,
+                3: self.set_mid_swing,
+                4: self.set_resting,
+                5: self.set_followthru
+            }
         )
 
+    def set_image(self, image_index=None, image_name='golfer.png'):
+        # Set the image and set it to the defined size
+        if image_index is not None and \
+           image_index in range(0, len(self.image_indices)):
+            self.image_indices.get(image_index)()
+        elif image_name and image_name in self.images:
+            self.surf = self.images.get(image_name)
+
     def set_resting(self):
-        self.set_image("golfer.png")
+        self.set_image(image_name="golfer.png")
+        self.club.set_resting()
+        self.club.display()
 
     def set_mid_swing(self):
-        self.set_image("golfer_mid.png")
+        self.set_image(image_name="golfer_mid.png")
+        self.club.set_mid_swing()
+        self.club.display()
 
     def set_full_swing(self):
-        self.set_image("golfer_full.png")
+        self.set_image(image_name="golfer_full.png")
+        self.club.set_full_swing()
+        self.club.display()
 
     def set_followthru(self):
-        self.set_image("golfer_followthru.png")
+        self.set_image(image_name="golfer_followthru.png")
+        self.club.set_followthru()
+        self.club.display()
+
+    def update_frame_dependent(self):
+        """Update the sprite image every 3 frames."""
+        self.current_frame += 1
+        if self.current_frame >= self.animation_frames:
+            self.current_frame = 0
+            if self.image_index == len(self.image_indices) - 1:
+                self.is_in_swing = False
+            self.image_index = (self.image_index + 1) % \
+                               len(self.image_indices)
+            self.set_image(image_index=self.image_index)
+        self.display()
 
     def update(self, pressed_keys):
         """Update the golfer's location.
 
         :param pressed_keys: A dict of pressed keys this fram
         """
+        if self.is_in_swing:
+            self.update_frame_dependent()
+            return
+        if pressed_keys[pg.K_SPACE]:
+            self.is_in_swing = True
+            self.update_frame_dependent()
+            return
         self.vector = [0, 0]
         if pressed_keys[pg.K_UP]:
             self.vector[1] = -self.speed
@@ -69,17 +134,6 @@ class Golfer(pg.sprite.Sprite):
             self.vector[0] = self.speed
             self.set_mid_swing()
             self.club.set_mid_swing()
-        # Actually move the ball on the screen
-        self.rect.move_ip(*self.vector)
-        # Keep ball on the screen
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > self.screen.get_size()[0]:
-            self.rect.right = self.screen.get_size()[0]
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > self.screen.get_size()[1]:
-            self.rect.bottom = self.screen.get_size()[1]
         self.display()
 
     def calcnewpos(self, rect, vector):

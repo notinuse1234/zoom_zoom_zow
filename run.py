@@ -4,7 +4,7 @@ import time
 
 import pygame as pg
 
-from objects import GolfBall, GolfClub, Golfer
+from objects import GolfBall, BigGolfBall, GolfClub, Golfer
 from resources import Colors, Events
 
 FPS = 30
@@ -32,8 +32,9 @@ class App():
         self.at_menu = True
         self.running = False
         self.ball = GolfBall(self.screen)
+        self.big_ball = BigGolfBall(self.screen)
         self.club = GolfClub(self.screen)
-        self.golfer = Golfer(self.screen, self.club)
+        self.golfer = Golfer(self.screen, self.clock, self.club)
 
     def display_message(self, text):
         """Display a message on the screen for 2 seconds.
@@ -169,9 +170,9 @@ class App():
 
     def swing_meter(self):
         """The swing meter."""
-        x = self.screen.get_size()[0] // 2 - 175
+        x = self.screen.get_size()[0] // 2 - 300
         y = self.screen.get_size()[1] - 40
-        w, h = 300, 20
+        w, h = 500, 20
         # draw the black outline
         pg.draw.rect(
             self.screen,
@@ -186,7 +187,7 @@ class App():
         )
         # draw each bar
         for i in range(x, x+w, 10):
-            if i == x + w - 100:
+            if i == x + w - (w / 5):
                 color = Colors.get('flag')
             else:
                 color = Colors.get('darkgray')
@@ -218,6 +219,7 @@ class App():
 
             self.screen.fill(Colors.get('tee_area'))
             self.swing_meter()
+            self.big_ball.update()
             self.golfer.update(pressed_keys)
             self.club.update()
             self.ball.update(pressed_keys)
