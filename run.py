@@ -5,7 +5,7 @@ import time
 import pygame as pg
 
 from objects import GolfBall, BigGolfBall, GolfClub, Golfer
-from objects import SwingMeter
+from objects import Button, SwingMeter
 from resources import Colors, Events
 
 FPS = 45
@@ -46,8 +46,7 @@ class App():
         """
         # Create the font
         large_text = pg.font.Font(
-            rp(os.path.join('resources', 'freesansbold.ttf')),
-            int(0.075 * self.screen.get_size()[0])
+            rp(os.path.join('resources', 'freesansbold.ttf')), int(0.075 * self.screen.get_size()[0])
         )
         # Create the text object
         text_surf, text_rect = self.text_objects(text, large_text)
@@ -72,49 +71,6 @@ class App():
         text_surf = font.render(text, True, color)
         return text_surf, text_surf.get_rect()
 
-    def button(self, text, x, y, w, h, ic, ac, action=None):
-        """Create a buton.
-
-        :param text: The button text
-        :param x: The X position of top left
-        :param y: The Y position of top left
-        :param w: The width of the button
-        :param h: The height of the button
-        :param ic: The color of button when not hovering
-        :param ac: The color of button when hovering
-        :param action: The action to take when clicked
-        """
-        mouse = pg.mouse.get_pos()
-        click = pg.mouse.get_pressed()
-        # If the mouse is inside the button
-        if x+w > mouse[0] > x and y+h > mouse[1] > y:
-            pg.draw.rect(
-                self.screen,
-                ac,
-                (x, y, w, h)
-            )
-            # If the mouse is clicked on the button
-            if click[0] == 1 and action:
-                action()
-        else:
-            # Normal button
-            pg.draw.rect(
-                self.screen,
-                ic,
-                (x, y, w, h)
-            )
-        # The button text
-        small_text = pg.font.Font(
-            rp(os.path.join('resources', 'freesansbold.ttf')),
-            int(0.02 * self.screen.get_size()[0])
-        )
-        text_surf, text_rect = self.text_objects(
-            text, small_text
-        )
-        text_rect.center = ((x+(w/2)),
-                            (y+(h/2)))
-        self.screen.blit(text_surf, text_rect)
-
     def main_menu(self):
         """The main menu for the game."""
 
@@ -127,6 +83,33 @@ class App():
         def quit_menu():
             """Close the menu and quit the app."""
             self.at_menu = False
+
+        # Begin button
+        begin_loc = (250, 450, 100, 50)
+        begin_button = Button(
+            screen=self.screen,
+            text="Begin",
+            x=begin_loc[0],
+            y=begin_loc[1],
+            w=begin_loc[2],
+            h=begin_loc[3],
+            ic=Colors.get('darkgray'),
+            ac=Colors.get('lightgray'),
+            action=begin_game
+        )
+        # Quit button
+        quit_loc = (600, 450, 100, 50)
+        quit_button = Button(
+            screen=self.screen,
+            text="Quit",
+            x=quit_loc[0],
+            y=quit_loc[1],
+            w=quit_loc[2],
+            h=quit_loc[3],
+            ic=Colors.get('darkgray'),
+            ac=Colors.get('lightgray'),
+            action=quit_menu
+        )
 
         while self.at_menu:
             for event in pg.event.get():
@@ -151,23 +134,9 @@ class App():
             )
             self.screen.blit(text_surf, text_rect)
             # Begin button
-            begin_loc = (250, 450, 100, 50)
-            self.button(
-                "Begin",
-                *begin_loc,
-                Colors.get('darkgray'),
-                Colors.get('lightgray'),
-                action=begin_game
-            )
+            begin_button.update()
             # Quit button
-            quit_loc = (600, 450, 100, 50)
-            self.button(
-                "Quit",
-                *quit_loc,
-                Colors.get('darkgray'),
-                Colors.get('lightgray'),
-                action=quit_menu
-            )
+            quit_button.update()
             pg.display.flip()
             self.clock.tick(FPS)
 

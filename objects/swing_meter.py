@@ -6,7 +6,7 @@ import pygame as pg
 from resources import Colors
 
 
-class SwingMeter(pg.sprite.Sprite):
+class SwingMeter():
 
     def __init__(self, screen, golfer):
         """Initialize the golf club.
