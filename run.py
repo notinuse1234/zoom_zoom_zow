@@ -13,15 +13,6 @@ SCREEN_WIDTH = 960
 SCREEN_HEIGHT = 640
 
 
-def rp(relative_path):
-    """Get absolute path to a resource."""
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
-
-
 class App():
     def __init__(self):
         """Initialize the game."""
@@ -31,7 +22,7 @@ class App():
         self.size = SCREEN_WIDTH, SCREEN_HEIGHT
         self.screen = pg.display.set_mode(self.size)
         self.at_menu = True
-        self.running = False
+        self.game_running = False
         # Game objects
         self.ball = GolfBall(self.screen)
         self.big_ball = BigGolfBall(self.screen)
@@ -46,7 +37,8 @@ class App():
         """
         # Create the font
         large_text = pg.font.Font(
-            rp(os.path.join('resources', 'freesansbold.ttf')), int(0.075 * self.screen.get_size()[0])
+            os.path.join('resources', 'freesansbold.ttf'),
+            int(0.075 * self.screen.get_size()[0])
         )
         # Create the text object
         text_surf, text_rect = self.text_objects(text, large_text)
@@ -76,7 +68,7 @@ class App():
 
         def begin_game():
             """Close the menu and start the game."""
-            self.running = True
+            self.game_running = True
             self.at_menu = False
             self.game_loop()
 
@@ -122,7 +114,7 @@ class App():
             self.screen.fill(Colors.get('heavy_rough'))
             # Title
             large_text = pg.font.Font(
-                rp(os.path.join('resources', 'freesansbold.ttf')),
+                os.path.join('resources', 'freesansbold.ttf'),
                 int(0.075 * self.screen.get_size()[0])
             )
             text_surf, text_rect = self.text_objects(
@@ -146,10 +138,10 @@ class App():
         def quit_game():
             """Quit the game back to the main menu."""
             self.at_menu = True
-            self.running = False
+            self.game_running = False
             self.main_menu()
 
-        while self.running:
+        while self.game_running:
             for event in pg.event.get():
                 # Quit to menu on escape
                 if event.type == pg.KEYDOWN:
