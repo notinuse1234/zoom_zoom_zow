@@ -5,6 +5,7 @@ import time
 import pygame as pg
 
 from objects import GolfBall, BigGolfBall, GolfClub, Golfer
+from objects import SwingMeter
 from resources import Colors, Events
 
 FPS = 45
@@ -31,10 +32,12 @@ class App():
         self.screen = pg.display.set_mode(self.size)
         self.at_menu = True
         self.running = False
+        # Game objects
         self.ball = GolfBall(self.screen)
         self.big_ball = BigGolfBall(self.screen)
         self.club = GolfClub(self.screen)
         self.golfer = Golfer(self.screen, self.clock, self.club)
+        self.swing_meter = SwingMeter(self.screen, self.golfer)
 
     def display_message(self, text):
         """Display a message on the screen for 2 seconds.
@@ -168,41 +171,6 @@ class App():
             pg.display.flip()
             self.clock.tick(FPS)
 
-    def swing_meter(self, pressed_keys):
-        """The swing meter."""
-        x = self.screen.get_size()[0] // 2 - 300
-        y = self.screen.get_size()[1] - 40
-        w, h = 500, 20
-        # draw the black outline
-        pg.draw.rect(
-            self.screen,
-            Colors.get('black'),
-            (x-2, y-2, w+4, h+4)
-        )
-        # draw the gray box
-        pg.draw.rect(
-            self.screen,
-            Colors.get('darkdarkgray'),
-            (x, y, w, h)
-        )
-        if self.golfer.is_in_swing:
-            pg.draw.rect(
-                self.screen,
-                Colors.get('water'),
-                (x, y, w, h)
-            )
-        # draw each bar
-        for i in range(x, x+w, 10):
-            if i == x + w - (w / 5):
-                color = Colors.get('flag')
-            else:
-                color = Colors.get('darkgray')
-            pg.draw.rect(
-                self.screen,
-                color,
-                (i+2, y+2, 6, h-2)
-            )
-
     def game_loop(self):
         """The game loop, when Begin is pressed."""
 
@@ -228,7 +196,7 @@ class App():
 
             self.screen.fill(Colors.get('tee_area'))
             # Display the swing meter
-            self.swing_meter(pressed_keys)
+            self.swing_meter.update(pressed_keys)
             # Get power and accuracy from the golfer
             if self.ball.teed_up and pressed_keys[pg.K_SPACE]:
                 power, accuracy = self.golfer.update(
