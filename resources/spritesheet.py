@@ -8,7 +8,8 @@ class Spritesheet(object):
     def image_at(self, rectangle, colorkey=None):
         """Load image from x,y,*rect."""
         rect = pg.Rect(rectangle)
-        image = pg.Surface(rect.size).convert_alpha()
+        image = pg.Surface(rect.size, pg.SRCALPHA)
+        image.fill((0,0,0,0))
         image.blit(self.sheet, (0, 0), rect)
         if colorkey is not None:
             if colorkey is -1:
