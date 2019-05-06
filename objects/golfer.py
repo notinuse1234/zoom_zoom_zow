@@ -23,7 +23,7 @@ class Golfer(pg.sprite.Sprite):
         self.radius = 50
 
         # Set the sprite images
-        self.images, self.image_indices = self.get_images()
+        self.images, self.image_functions = self.get_images()
         self.image_index = 0
         self.set_image()
 
@@ -55,38 +55,34 @@ class Golfer(pg.sprite.Sprite):
                 pg.transform.scale(sprite, self.size)
             )
         return scaled_strip, {
-                0: 0,
-                1: 1,
-                2: 2,
-                3: 1,
-                4: 0,
-                5: 3
+                0: self.set_resting,
+                1: self.set_mid_swing,
+                2: self.set_full_swing,
+                3: self.set_mid_swing,
+                4: self.set_resting,
+                5: self.set_followthru
             }
 
     def set_image(self, image_index=0):
         if image_index is not None and \
-           image_index in range(0, len(self.image_indices)):
-            self.surf = self.images[self.image_indices[image_index]]
+           image_index in range(0, len(self.images)):
+            self.surf = self.images[image_index]
 
     def set_resting(self):
         self.set_image(image_index=0)
         self.club.set_resting()
-        #self.club.display()
 
     def set_mid_swing(self):
         self.set_image(image_index=1)
         self.club.set_mid_swing()
-        #self.club.display()
 
     def set_full_swing(self):
         self.set_image(image_index=2)
         self.club.set_full_swing()
-        #self.club.display()
 
     def set_followthru(self):
         self.set_image(image_index=3)
         self.club.set_followthru()
-        #self.club.display()
 
     def update_frame_dependent(self):
         """Update the sprite image every 5 frames during a swing."""
@@ -94,13 +90,13 @@ class Golfer(pg.sprite.Sprite):
         self.current_frame += 1
         if self.current_frame >= self.animation_frames:
             self.current_frame = 0
-            if self.image_index == len(self.image_indices) - 2:
+            if self.image_index == len(self.image_functions) - 2:
                 power, speed = self.club.power, 0
-            if self.image_index == len(self.image_indices) - 1:
+            if self.image_index == len(self.image_functions) - 1:
                 self.is_in_swing = False
             self.image_index = (self.image_index + 1) % \
-                               len(self.image_indices)
-            self.set_image(image_index=self.image_index)
+                               len(self.image_functions)
+            self.image_functions[self.image_index]()
         self.club.update()
         self.display()
         return power, speed

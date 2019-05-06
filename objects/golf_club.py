@@ -3,6 +3,8 @@ import math
 
 import pygame as pg
 
+from resources import Spritesheet
+
 
 class GolfClub(pg.sprite.Sprite):
 
@@ -30,24 +32,21 @@ class GolfClub(pg.sprite.Sprite):
         self.set_resting()
 
     def get_images(self):
-        """Get all images defined by the filenames and return them.
+        """Get all images defined by the spritesheet and return them.
 
-        :return: A dict of filename: pygame.Surface and index dict
-        :rtype: dict of str: pygame.Surface and dict of int: function
+        :return: A list pygame.Surface and index dict
+        :rtype: list of pygame.Surface and dict of int: int
         """
-        filenames = [
-            'golf_club.png', 'golf_club_mid.png',
-            'golf_club_full.png', 'golf_club_followthru.png'
-        ]
-        return (
-            {
-                filename: pg.transform.scale(
-                    pg.image.load(
-                        os.path.join(os.getcwd(), "resources", filename)
-                    ).convert_alpha(),
-                    self.size
-                ) for filename in filenames 
-            }, {
+        ss = Spritesheet(
+            os.path.join(os.getcwd(), 'resources', 'golf_club_sheet.png')
+        )
+        strip = ss.load_strip((0,0,200,200), 4)
+        scaled_strip = []
+        for sprite in strip:
+            scaled_strip.append(
+                pg.transform.scale(sprite, self.size)
+            )
+        return scaled_strip, {
                 0: self.set_resting,
                 1: self.set_mid_swing,
                 2: self.set_full_swing,
@@ -55,35 +54,31 @@ class GolfClub(pg.sprite.Sprite):
                 4: self.set_resting,
                 5: self.set_followthru
             }
-        )
 
-    def set_image(self, image_index=None, image_name='golf_club.png'):
-        # Set the image and set it to the defined size
+    def set_image(self, image_index=0):
         if image_index is not None and \
            image_index in range(0, len(self.image_indices)):
-            self.image_indices.get(image_index)()
-        elif image_name and image_name in self.images:
-            self.surf = self.images.get(image_name)
+            self.surf = self.images[image_index]
         if not hasattr(self, 'rect'):
             self.rect = self.surf.get_rect()
 
     def set_resting(self):
-        self.set_image(image_name="golf_club.png")
+        self.set_image(image_index=0)
         self.rect.right = self.original_right_loc
         self.rect.bottom = self.original_bottom_loc
 
     def set_mid_swing(self):
-        self.set_image(image_name="golf_club_mid.png")
+        self.set_image(image_index=1)
         self.rect.right = self.original_right_loc - 100
         self.rect.bottom = self.original_bottom_loc
 
     def set_full_swing(self):
-        self.set_image(image_name="golf_club_full.png")
+        self.set_image(image_index=2)
         self.rect.right = self.original_right_loc - 110
         self.rect.bottom = self.original_bottom_loc - 120
 
     def set_followthru(self):
-        self.set_image(image_name="golf_club_followthru.png")
+        self.set_image(image_index=3)
         self.rect.right = self.original_right_loc - 110
         self.rect.bottom = self.original_bottom_loc - 120
 
