@@ -3,6 +3,8 @@ import math
 
 import pygame as pg
 
+from resources import Spritesheet
+
 
 class Golfer(pg.sprite.Sprite):
 
@@ -38,58 +40,51 @@ class Golfer(pg.sprite.Sprite):
         self.current_frame = 0
 
     def get_images(self):
-        """Get all images defined by the filenames and return them.
+        """Get all images defined by the spritesheet and return them.
 
-        :return: A dict of filename: pygame.Surface and index dict
-        :rtype: dict of str: pygame.Surface and dict of int: function
+        :return: A list pygame.Surface and index dict
+        :rtype: list of pygame.Surface and dict of int: int
         """
-        filenames = [
-            'golfer.png', 'golfer_mid.png',
-            'golfer_full.png', 'golfer_followthru.png'
-        ]
-        return (
-            {
-                filename: pg.transform.scale(
-                    pg.image.load(
-                        os.path.join(os.getcwd(), "resources", filename)
-                    ).convert_alpha(),
-                    self.size
-                ) for filename in filenames 
-            }, {
-                0: self.set_resting,
-                1: self.set_mid_swing,
-                2: self.set_full_swing,
-                3: self.set_mid_swing,
-                4: self.set_resting,
-                5: self.set_followthru
-            }
+        ss = Spritesheet(
+            os.path.join(os.getcwd(), 'resources', 'golfer_sheet.png')
         )
+        strip = ss.load_strip((0,0,220,400), 4)
+        scaled_strip = []
+        for sprite in strip:
+            scaled_strip.append(
+                pg.transform.scale(sprite, self.size)
+            )
+        return scaled_strip, {
+                0: 0,
+                1: 1,
+                2: 2,
+                3: 1,
+                4: 0,
+                5: 3
+            }
 
-    def set_image(self, image_index=None, image_name='golfer.png'):
-        # Set the image and set it to the defined size
+    def set_image(self, image_index=0):
         if image_index is not None and \
            image_index in range(0, len(self.image_indices)):
-            self.image_indices.get(image_index)()
-        elif image_name and image_name in self.images:
-            self.surf = self.images.get(image_name)
+            self.surf = self.images[self.image_indices[image_index]]
 
     def set_resting(self):
-        self.set_image(image_name="golfer.png")
+        self.set_image(image_index=0)
         self.club.set_resting()
         #self.club.display()
 
     def set_mid_swing(self):
-        self.set_image(image_name="golfer_mid.png")
+        self.set_image(image_index=1)
         self.club.set_mid_swing()
         #self.club.display()
 
     def set_full_swing(self):
-        self.set_image(image_name="golfer_full.png")
+        self.set_image(image_index=2)
         self.club.set_full_swing()
         #self.club.display()
 
     def set_followthru(self):
-        self.set_image(image_name="golfer_followthru.png")
+        self.set_image(image_index=3)
         self.club.set_followthru()
         #self.club.display()
 
